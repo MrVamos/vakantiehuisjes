@@ -17,9 +17,6 @@ class BookHousesController extends Controller
      */
     public function showStep1(Request $request)
     {
-        //$request->session()->forget('customerData');
-        //$request->session()->forget('bookingData');
-
         $customerData = $request->session()->get('customerData');
         return view('book.step1')->with('customerData', $customerData);
     }
@@ -39,8 +36,8 @@ class BookHousesController extends Controller
         $validatedData = $this->validate($request, [
             'voornaam' => 'required|string',
             'achternaam' => 'required|string',
-            'email' => 'required|email',
-            'wachtwoord' => 'required|string',
+            'email' => 'required|string|email|max:255|unique:users',
+            'wachtwoord' => 'required|string|min:8|confirmed',
             'kaartnummer' => 'required|string|max:9',
             'postcode' => 'postal_code:NL',
             'straatnaam' => 'required|string|max:100',
@@ -207,8 +204,8 @@ class BookHousesController extends Controller
         */
 
         // Destroy sessions
-        //$request->session()->forget('customerData');
-        //$request->session()->forget('bookingData');
+        $request->session()->forget('customerData');
+        $request->session()->forget('bookingData');
 
         return redirect('/book/thankyou');
 
