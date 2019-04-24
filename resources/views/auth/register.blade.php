@@ -48,8 +48,7 @@
                             <div class="col-md-2 label">{{Form::label('wachtwoord-confirm', 'Wachtwoord bevestiging:')}}</div>
 
                         <div class="col-md-4">
-                            {{Form::password('wachtwoord-conform', ['class' => 'form-control', 'name' => 'wachtwoord-confirm', 'autocomplete' => 'new-password'])}}
-                            {{-- <input id="wachtwoord-confirm" type="password" class="form-control" name="wachtwoord_confirmation" required autocomplete="new-password"> --}}
+                            {{Form::password('wachtwoord-confirm', ['class' => 'form-control', 'name' => 'wachtwoord_confirmation', 'autocomplete' => 'new-password', 'type' => 'password', 'required' => 'required'])}}
                         </div>
                     </div>
 
