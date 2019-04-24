@@ -33,6 +33,9 @@ class BookHousesController extends Controller
      */
     public function postStep1(Request $request)
     {
+        // Remove custom error (no custom errors are used in this step)
+        $request->session()->forget('error');
+
         $validatedData = $this->validate($request, [
             'voornaam' => 'required|string',
             'achternaam' => 'required|string',
@@ -75,6 +78,9 @@ class BookHousesController extends Controller
      */
     public function postStep2(Request $request)
     {
+        // Remove custom error
+        $request->session()->forget('error');
+
 
         $validatedData = $this->validate($request, [
             'huistype' => 'required',
@@ -147,10 +153,12 @@ class BookHousesController extends Controller
         $houseTypeName = BookHouse::find($houseType)->name;
 
         if(count($checkDoubleBooking) == 1) {
-            $error = \Illuminate\Validation\ValidationException::withMessages([
-                'huistype' => 'Het type vakantiehuis \''.strtolower($houseTypeName).'\' is al geboekt in deze periode. Ga naar stap 2 om een andere periode of type vakantiehuis te kiezen',
-             ]);
-             throw $error;
+
+             $error = 'Het type vakantiehuis \''.strtolower($houseTypeName).'\' is al geboekt in deze periode. Kies een andere periode of type vakantiehuis';
+             $request->session()->put('error', $error);
+
+            return redirect('book/step2');
+
         }
 
         // Add user to database if user doesn't already exists
