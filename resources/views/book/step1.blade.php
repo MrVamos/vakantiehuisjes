@@ -18,6 +18,16 @@
         </div>
 
         <div class="row">
+            <div class="col-md-2 label">{{Form::label('email', 'E-mail:')}}</div>
+            <div class="col-md-4">{{Form::text('email', $customerData['email'], ['class' => 'form-control', 'placeholder' => 'E-mail'])}}</div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-2 label">{{Form::label('wachtwoord', 'Wachtwoord:')}}</div>
+            <div class="col-md-4">{{Form::password('wachtwoord', ['class' => 'form-control'])}}</div>
+        </div>
+
+        <div class="row">
             <div class="col-md-2 label">{{Form::label('kaartnummer', 'ID kaartnummer hoofdboeker:')}}</div>
              <div class="col-md-4">{{Form::text('kaartnummer', $customerData['kaartnummer'], ['class' => 'form-control', 'placeholder' => '#########'])}}</div>
         </div>

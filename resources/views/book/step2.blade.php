@@ -13,12 +13,12 @@
 
         <div class="row">
             <div class="col-md-2 label">{{Form::label('aankomst', 'Datum aankomst:')}}</div>
-            <div class="col-md-4">{{Form::text('aankomst', $bookingData['aankomst'], ['class' => 'form-control date', 'placeholder' => date('d-m-Y', strtotime(date('d-m-Y'). ' + 1 days'))])}}</div>
+            <div class="col-md-4">{{Form::text('aankomst', $bookingData['aankomst'], ['class' => 'form-control date', 'placeholder' => 'dd-mm-YYYY'])}}</div>
         </div>
 
         <div class="row">
             <div class="col-md-2 label">{{Form::label('vertrek', 'Datum vertrek:')}}</div>
-             <div class="col-md-4">{{Form::text('vertrek', $bookingData['vertrek'], ['class' => 'form-control date', 'placeholder' => date('d-m-Y', strtotime(date('d-m-Y'). ' + 3 days'))])}}</div>
+             <div class="col-md-4">{{Form::text('vertrek', $bookingData['vertrek'], ['class' => 'form-control date', 'placeholder' => 'dd-mm-YYYY'])}}</div>
         </div>
 
         <div class="row">

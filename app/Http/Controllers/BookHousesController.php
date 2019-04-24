@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\BookHouse;
+use App\Bookings;
+use App\User;
 
 class BookHousesController extends Controller
 {
@@ -15,6 +17,9 @@ class BookHousesController extends Controller
      */
     public function showStep1(Request $request)
     {
+        //$request->session()->forget('customerData');
+        //$request->session()->forget('bookingData');
+
         $customerData = $request->session()->get('customerData');
         return view('book.step1')->with('customerData', $customerData);
     }
@@ -31,6 +36,8 @@ class BookHousesController extends Controller
         $validatedData = $this->validate($request, [
             'voornaam' => 'required|string',
             'achternaam' => 'required|string',
+            'email' => 'required|email',
+            'wachtwoord' => 'required|string',
             'kaartnummer' => 'required|string|max:9',
             'postcode' => 'postal_code:NL',
             'straatnaam' => 'required|string|max:100',
@@ -124,9 +131,57 @@ class BookHousesController extends Controller
      */
     public function postStep3(Request $request)
     {
-        // Get booking- and customer-data
+        // Get booking- and customer-data from sessions
         $customerData = $request->session()->get('customerData');
         $bookingData = $request->session()->get('bookingData');
+
+        $houseType = $bookingData['huistype'];
+        $arrival = strtotime($bookingData['aankomst']);
+        $departure = strtotime($bookingData['vertrek']);
+
+        $checkDoubleBooking = Bookings::where('housetype', $houseType)
+                            ->whereBetween('arrival', [$arrival, $departure])
+                            ->whereBetween('departure', [$arrival, $departure])
+                            ->get();
+
+        $houseTypeName = BookHouse::find($houseType)->name;
+
+        if(count($checkDoubleBooking) == 1) {
+            $error = \Illuminate\Validation\ValidationException::withMessages([
+                'huistype' => 'Het type vakantiehuis \''.strtolower($houseTypeName).'\' is al geboekt in deze periode. Ga naar stap 2 om een andere periode of type vakantiehuis te kiezen',
+             ]);
+             throw $error;
+        }
+
+        // Add user to database if user doesn't already exists
+        $checkUser = User::where('email', $customerData['email'])->get();
+
+        if(count($checkUser) == 0) {
+            $user = new User;
+            $user->name = $customerData['voornaam'].' '.$customerData['achternaam'];
+            $user->firstname = $customerData['voornaam'];
+            $user->surname = $customerData['achternaam'];
+            $user->email = $customerData['email'];
+            $user->password = $customerData['wachtwoord'];
+            $user->cardnumber = $customerData['kaartnummer'];
+            $user->postal_code = $customerData['postcode'];
+            $user->streetname = $customerData['straatnaam'];
+            $user->housenumber = $customerData['huisnummer'];
+            $user->city = $customerData['plaats'];
+            $user->save();
+        }
+
+        // Add booking to database
+        $booking = new Bookings;
+        $booking->housetype = $bookingData['huistype'];
+        $booking->arrival = strtotime($bookingData['aankomst']);
+        $booking->departure = strtotime($bookingData['vertrek']);
+        $booking->adults = $bookingData['volwassenen'];
+        $booking->children = $bookingData['kinderen'];
+        $booking->babys = $bookingData['babys'];
+        $booking->customerid = count($checkUser) == 1 ? $checkUser[0]['id'] : $user->id;
+        $booking->save();
+
 
         // Call API to check for availability
 
@@ -144,8 +199,8 @@ class BookHousesController extends Controller
         */
 
         // Destroy sessions
-        $request->session()->forget('customerData');
-        $request->session()->forget('bookingData');
+        //$request->session()->forget('customerData');
+        //$request->session()->forget('bookingData');
 
         return redirect('/book/thankyou');
 

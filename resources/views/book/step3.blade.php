@@ -13,9 +13,15 @@
             <div class="col-md-2 label">{{Form::label('voornaam', 'Voornaam:')}}</div>
             <div class="col-md-4">{{Form::text('voornaam', $customerData['voornaam'], ['class' => 'form-control', 'disabled'=>'disabled'])}}</div>
         </div>
+
         <div class="row">
             <div class="col-md-2 label">{{Form::label('achternaam', 'Achternaam:')}}</div>
             <div class="col-md-4">{{Form::text('achternaam', $customerData['achternaam'], ['class' => 'form-control', 'disabled'=>'disabled'])}}</div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-2 label">{{Form::label('email', 'E-mail:')}}</div>
+            <div class="col-md-4">{{Form::text('email', $customerData['email'], ['class' => 'form-control', 'disabled'=>'disabled'])}}</div>
         </div>
 
         <div class="row">
