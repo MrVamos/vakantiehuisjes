@@ -23,3 +23,7 @@ Route::get('/book/step3', 'BookHousesController@showStep3');
 Route::post('/book/step3', 'BookHousesController@postStep3');
 
 Route::get('/book/thankyou', 'BookHousesController@thankyou');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

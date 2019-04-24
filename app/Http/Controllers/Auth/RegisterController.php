@@ -49,9 +49,15 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'wachtwoord' => ['required', 'string', 'min:8', 'confirmed'],
+            'voornaam' => 'required|string',
+            'achternaam' => 'required|string',
+            'kaartnummer' => 'required|string|max:9',
+            'postcode' => 'postal_code:NL',
+            'straatnaam' => 'required|string|max:100',
+            'huisnummer' => 'required|max:6',
+            'plaats' => 'required|string|max:100',
         ]);
     }
 
@@ -63,10 +69,18 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+
         return User::create([
-            'name' => $data['name'],
+            'name' => $data['voornaam'].' '.$data['achternaam'],
             'email' => $data['email'],
-            'password' => Hash::make($data['password']),
+            'password' => Hash::make($data['wachtwoord']),
+            'firstname' => $data['voornaam'],
+            'surname' => $data['achternaam'],
+            'cardnumber' => $data['kaartnummer'],
+            'postal_code' => $data['postcode'],
+            'streetname' => $data['straatnaam'],
+            'housenumber' => $data['huisnummer'],
+            'city' => $data['plaats']
         ]);
     }
 }
