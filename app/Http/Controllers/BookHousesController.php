@@ -36,7 +36,7 @@ class BookHousesController extends Controller
         $validatedData = $this->validate($request, [
             'voornaam' => 'required|string',
             'achternaam' => 'required|string',
-            'email' => 'required|string|email|max:255|unique:users',
+            'email' => 'required|string|email|max:255',
             'wachtwoord' => 'required|string|min:8|confirmed',
             'kaartnummer' => 'required|string|max:9',
             'postcode' => 'postal_code:NL',

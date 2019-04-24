@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="jumbotron text-center">
-        <h1>Bedankt voor uw boeking</h1>
-        <a href="/" class="btn btn-primary btn-lg" role="button">Home</a>
+        <h1>{{ __('book.Thank you for booking') }}</h1>
+        <a href="/" class="btn btn-primary btn-lg" role="button">{{ __('book.Home') }}</a>
     </div>
 @endsection
