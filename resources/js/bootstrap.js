@@ -8,13 +8,12 @@ window._ = require('lodash');
  */
 
 try {
-    window.Popper = require('popper.js').default;
     window.$ = window.jQuery = require('jquery');
+    window.Popper = require('popper.js').default;
 
     require('bootstrap');
 
 } catch (e) {}
-
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
@@ -34,7 +33,7 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 // Somehow the header stays empty when using a template layout and it appears in the body, so I removed '.head' from the selector.
 //let token = document.head.querySelector('meta[name="csrf-token"]');
-let token = document.querySelector('meta[name="csrf-token"]');
+let token = document.head.querySelector('meta[name="csrf-token"]');
 
 if (token) {
     window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;

@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\House;
+use App\BookHouse;
 
-class BookingsController extends Controller
+class BookHousesController extends Controller
 {
     /**
      * Show step 1 of booking-form
@@ -55,7 +55,7 @@ class BookingsController extends Controller
         $bookingData = $request->session()->get('bookingData');
 
         // Get house-types
-        $houses = House::orderBy('id', 'asc')->pluck('name', 'id');
+        $houses = BookHouse::orderBy('id', 'asc')->pluck('name', 'id');
         return view('book.step2')->with(['bookingData' => $bookingData, 'houses' => $houses]);
     }
 
@@ -76,12 +76,12 @@ class BookingsController extends Controller
             'volwassenen' => 'required|integer|max:2',
             'kinderen' => 'required|integer|max:2',
             'babys' => 'required|integer|max:2',
-            'privacystatement' => 'accepted',
+            'privacystatement' => 'accepted'
         ]);
 
         // Check if the amount of persons for the booking doesn't exceed the max amount of persons for the house-type
         $total_persons = $request['volwassenen'] + $request['kinderen'] + $request['babys'];
-        $house = House::find($request['huistype']);
+        $house = BookHouse::find($request['huistype']);
         if($total_persons > $house->max_persons) {
             // Error! Too many occupants for the chosen house-type
             $error = \Illuminate\Validation\ValidationException::withMessages([
@@ -106,9 +106,9 @@ class BookingsController extends Controller
     {
         $customerData = $request->session()->get('customerData');
         $bookingData = $request->session()->get('bookingData');
-        $houses = House::orderBy('id', 'asc')->pluck('name', 'id');
+        $houses = BookHouse::orderBy('id', 'asc')->pluck('name', 'id');
 
-        $pricePerDay = House::find($bookingData['huistype'])->price;
+        $pricePerDay = BookHouse::find($bookingData['huistype'])->price;
 
         // Calculate price
         $days = round((strtotime($bookingData['vertrek']) - strtotime($bookingData['aankomst'])) / (60 * 60 * 24));

@@ -1,9 +1,9 @@
-@extends('layouts.app');
+@extends('layouts.app')
 
 @section('content')
 
     <h3>Vakantiehuisje boeken - Stap 2</h3>
-    {!! Form::open(['action' => 'BookingsController@postStep2', 'method' => 'POST']) !!}
+    {!! Form::open(['action' => 'BookHousesController@postStep2', 'method' => 'POST']) !!}
         <div class="row">
             <div class="col-md-2 label">{{Form::label('huistype', 'Type vakantiehuisje:')}}</div>
             <div class="col-md-4">

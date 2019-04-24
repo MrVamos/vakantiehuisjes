@@ -13,16 +13,13 @@
 
 Route::get('/', 'PagesController@index');
 
-Route::get('/book/step1', 'BookingsController@showStep1');
-Route::post('/book/step1', 'BookingsController@postStep1');
+Route::get('/book/step1', 'BookHousesController@showStep1');
+Route::post('/book/step1', 'BookHousesController@postStep1');
 
-Route::get('/book/step2', 'BookingsController@showStep2');
-Route::post('/book/step2', 'BookingsController@postStep2');
+Route::get('/book/step2', 'BookHousesController@showStep2');
+Route::post('/book/step2', 'BookHousesController@postStep2');
 
-Route::get('/book/step3', 'BookingsController@showStep3');
-Route::post('/book/step3', 'BookingsController@postStep3');
+Route::get('/book/step3', 'BookHousesController@showStep3');
+Route::post('/book/step3', 'BookHousesController@postStep3');
 
-Route::get('/book/thankyou', 'BookingsController@thankyou');
-
-
-Route::get('/houses', 'HousesController@index');
+Route::get('/book/thankyou', 'BookHousesController@thankyou');
