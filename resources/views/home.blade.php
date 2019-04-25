@@ -14,7 +14,8 @@
                         </div>
                     @endif
 
-                    {{ __('auth.You are logged in.') }}
+                    {{ __('auth.You are logged in and will be redirected in a moment.') }}
+                    {{ header( "refresh:5;url=/" ) }}
                 </div>
             </div>
         </div>

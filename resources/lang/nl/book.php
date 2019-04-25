@@ -21,6 +21,10 @@ return [
     'Step 1' => 'Stap 1',
     'Step 2' => 'Stap 2',
     'mm-dd-YYYY' => 'dd-mm-YYYY',
+    'Max persons:' => 'Maximaal aantal personen:',
+    'Price per day:' => 'Prijs per dag:',
+    'Book' => 'Boeken',
+
 
 
     // Step 1

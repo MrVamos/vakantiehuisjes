@@ -49,15 +49,15 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'wachtwoord' => ['required', 'string', 'min:8', 'confirmed'],
-            'voornaam' => 'required|string',
-            'achternaam' => 'required|string',
-            'kaartnummer' => 'required|string|max:9',
-            'postcode' => 'postal_code:NL',
-            'straatnaam' => 'required|string|max:100',
-            'huisnummer' => 'required|max:6',
-            'plaats' => 'required|string|max:100',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8:confirmed',
+            'firstname' => 'required|string|max:100',
+            'surname' => 'required|string|max:100',
+            'cardnumber' => 'required|string|max:9',
+            'postal_code' => 'postal_code:NL',
+            'streetname' => 'required|string|max:100',
+            'housenumber' => 'required|max:6',
+            'city' => 'required|string|max:100',
         ]);
     }
 
@@ -71,16 +71,16 @@ class RegisterController extends Controller
     {
 
         return User::create([
-            'name' => $data['voornaam'].' '.$data['achternaam'],
+            'name' => $data['firstname'].' '.$data['surname'],
             'email' => $data['email'],
-            'password' => Hash::make($data['wachtwoord']),
-            'firstname' => $data['voornaam'],
-            'surname' => $data['achternaam'],
-            'cardnumber' => $data['kaartnummer'],
-            'postal_code' => $data['postcode'],
-            'streetname' => $data['straatnaam'],
-            'housenumber' => $data['huisnummer'],
-            'city' => $data['plaats']
+            'password' => Hash::make($data['password']),
+            'firstname' => $data['firstname'],
+            'surname' => $data['surname'],
+            'cardnumber' => $data['cardnumber'],
+            'postal_code' => $data['postal_code'],
+            'streetname' => $data['streetname'],
+            'housenumber' => $data['housenumber'],
+            'city' => $data['city']
         ]);
     }
 }

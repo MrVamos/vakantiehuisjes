@@ -1,8 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
+<div class="jumbotron">
 
-<h3>{{ __('book.Book vacationhouse') }}</h3>
+    <h3>{{ __('book.Book vacationhouse') }}</h3>
     {!! Form::open(['action' => 'BookHousesController@postStep2', 'method' => 'POST']) !!}
         <div class="row">
             <div class="col-md-2 label">{{Form::label('housetype', __('book.Vacationhouse type'))}}</div>
@@ -48,5 +49,5 @@
         {{Form::submit(__('book.Next'), ['class' => 'btn btn-primary'])}}
     {!! Form::close() !!}
 
-
+</div>
 @endsection

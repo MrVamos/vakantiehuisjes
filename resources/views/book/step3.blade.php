@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+<div class="jumbotron">
     <h3>{{ __('book.Book vacationhouse') }} - {{ __('book.Verification') }}</h3>
     <p><strong>{{ __('book.Check your booking:')}}</strong></p>
     {!! Form::open(['action' => 'BookHousesController@postStep3', 'method' => 'POST']) !!}
@@ -130,5 +131,5 @@
 
     {!! Form::close() !!}
 
-
-@stop
+</div>
+@endsection

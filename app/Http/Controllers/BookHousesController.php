@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\BookHouse;
@@ -22,8 +23,8 @@ class BookHousesController extends Controller
         if(Auth::user()){
 
             // Get and add Customerdata to session
-            $customerData = User::find(Auth::user('id'));
-            $request->session()->put('customerData', $customerData[0]);
+            $userData = User::find(Auth::user('id'));
+            $customerData = $request->session()->put('customerData', $userData[0]);
 
             return redirect('book/step2');
         }
@@ -45,10 +46,10 @@ class BookHousesController extends Controller
         $request->session()->forget('error');
 
         $validatedData = $this->validate($request, [
-            'firstname' => 'required|string',
-            'surname' => 'required|string',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
+            'firstname' => 'required|string|max:100',
+            'surname' => 'required|string|max:100',
             'cardnumber' => 'required|string|max:9',
             'postal_code' => 'postal_code:NL',
             'streetname' => 'required|string|max:100',
@@ -89,14 +90,13 @@ class BookHousesController extends Controller
         // Remove custom error
         $request->session()->forget('error');
 
-
         $validatedData = $this->validate($request, [
             'housetype' => 'required',
             'arrival' => 'required|date|date_format:d-m-Y|after:'.date('d-m-Y'),
             'departure' => 'required|date|date_format:d-m-Y|after:'.date('d-m-Y', strtotime($request['arrival']. ' + 1 days')),
-            'adults' => 'required|integer|max:2',
-            'children' => 'required|integer|max:2',
-            'babys' => 'required|integer|max:2',
+            'adults' => 'required|integer|max:20',
+            'children' => 'required|integer|max:20',
+            'babys' => 'required|integer|max:20',
             'privacystatement' => 'accepted'
         ]);
 
@@ -127,8 +127,8 @@ class BookHousesController extends Controller
     {
         $customerData = $request->session()->get('customerData');
         $bookingData = $request->session()->get('bookingData');
-        $houses = BookHouse::orderBy('id', 'asc')->pluck('name', 'id');
 
+        $houses = BookHouse::orderBy('id', 'asc')->pluck('name', 'id');
         $pricePerDay = BookHouse::find($bookingData['housetype'])->price;
 
         // Calculate price
@@ -150,16 +150,22 @@ class BookHousesController extends Controller
         $bookingData = $request->session()->get('bookingData');
 
         $houseType = $bookingData['housetype'];
+        $houseTypeName = BookHouse::find($houseType)->name;
+
+        // Convert arrival- and departure to timestamps
         $arrival = strtotime($bookingData['arrival']);
         $departure = strtotime($bookingData['departure']);
 
+        // Check if the housetype is already booked within the arrival- and departure-date
         $checkDoubleBooking = Bookings::where('housetype', $houseType)
+                            ->where('arrival', $arrival)
+                            ->where('departure', $departure)
                             ->whereBetween('arrival', [$arrival, $departure])
                             ->whereBetween('departure', [$arrival, $departure])
                             ->get();
 
-        $houseTypeName = BookHouse::find($houseType)->name;
-
+        // If double-booked, redirect to step 2 and show a custom error
+        // @todo let the error go past translation
         if(count($checkDoubleBooking) == 1) {
 
              $error = 'Het type vakantiehuis \''.strtolower($houseTypeName).'\' is al geboekt in deze periode. Kies een andere periode of type vakantiehuis';
@@ -199,8 +205,7 @@ class BookHousesController extends Controller
         $booking->save();
 
 
-        // Call API to check for availability
-
+        // Call API to check for availability ??
         /*
         $client = new GuzzleHttp\Client();
         $res = $client->get('https://api.github.com/user', ['arrival' => $bookingData['aankomst'], 'departure' => $bookingData['vertrek']]);
@@ -226,6 +231,5 @@ class BookHousesController extends Controller
     {
         return view('book.thankyou');
     }
-
 
 }

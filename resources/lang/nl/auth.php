@@ -43,7 +43,7 @@ return [
     'Register' => 'Registreer',
     'Remember Me' => 'Herinner mij',
     'Forgot Your Password?' => 'Wachtwoord vergeten?',
-    'You are logged in.' => 'Je bent nu ingelogd.',
+    'You are logged in and will be redirected in a moment.' => 'Je bent nu ingelogd en wordt binnen enkele seconden doorgestuurd.',
     'Dashboard' => 'Dashboard',
 
     // Password reset
