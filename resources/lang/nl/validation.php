@@ -13,9 +13,10 @@ return [
     |
     */
 
+
     'accepted' => 'De :attribute moet geaccepteerd worden om door te kunnen gaan.',
     'active_url' => 'The :attribute is not a valid URL.',
-    'after' => 'het veld \':attribute\' moet een datum zijn na :date.',
+    'after' => 'Het veld \':attribute\' moet een datum zijn na :date.',
     'after_or_equal' => 'The :attribute must be a date after or equal to :date.',
     'alpha' => 'The :attribute may only contain letters.',
     'alpha_dash' => 'The :attribute may only contain letters, numbers, dashes and underscores.',
@@ -146,6 +147,26 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        // Step 1
+        'firstname' => 'Voornaam',
+        'surname' => 'Achternaam',
+        'email' => 'E-mailadres',
+        'password' => 'Wachtwoord',
+        'cardnumber' => 'ID kaartnummer hoofdboeker',
+        'postal_code' => 'Postcode',
+        'streetname' => 'Straatnaam',
+        'housenumber' => 'Huisnummer',
+        'city' => 'Plaatsnaam',
+
+        // Step 2
+        'housetype' => 'Type vakantiehuisje',
+        'arrival' => 'Datum aankomst',
+        'departure' => 'Datum vertrek',
+        'adults' => 'Volwassenen',
+        'children' => 'Kinderen',
+        'babys' => 'Baby\'s',
+        'privacystatement' => 'Privacystatement',
+    ],
 
 ];

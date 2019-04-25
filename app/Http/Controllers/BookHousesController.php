@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use App\BookHouse;
 use App\Bookings;
 use App\User;
@@ -17,6 +18,16 @@ class BookHousesController extends Controller
      */
     public function showStep1(Request $request)
     {
+        // Check if logged in
+        if(Auth::user()){
+
+            // Get and add Customerdata to session
+            $customerData = User::find(Auth::user('id'));
+            $request->session()->put('customerData', $customerData[0]);
+
+            return redirect('book/step2');
+        }
+
         $customerData = $request->session()->get('customerData');
         return view('book.step1')->with('customerData', $customerData);
     }
@@ -34,15 +45,15 @@ class BookHousesController extends Controller
         $request->session()->forget('error');
 
         $validatedData = $this->validate($request, [
-            'voornaam' => 'required|string',
-            'achternaam' => 'required|string',
-            'email' => 'required|string|email|max:255',
-            'wachtwoord' => 'required|string|min:8|confirmed',
-            'kaartnummer' => 'required|string|max:9',
-            'postcode' => 'postal_code:NL',
-            'straatnaam' => 'required|string|max:100',
-            'huisnummer' => 'required|max:6',
-            'plaats' => 'required|string|max:100',
+            'firstname' => 'required|string',
+            'surname' => 'required|string',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8|confirmed',
+            'cardnumber' => 'required|string|max:9',
+            'postal_code' => 'postal_code:NL',
+            'streetname' => 'required|string|max:100',
+            'housenumber' => 'required|max:6',
+            'city' => 'required|string|max:100',
         ]);
 
         // Fill session with form values after sucessfull validation
@@ -80,18 +91,18 @@ class BookHousesController extends Controller
 
 
         $validatedData = $this->validate($request, [
-            'huistype' => 'required',
-            'aankomst' => 'required|date|date_format:d-m-Y|after:'.date('d-m-Y'),
-            'vertrek' => 'required|date|date_format:d-m-Y|after:'.date('d-m-Y', strtotime($request['aankomst']. ' + 1 days')),
-            'volwassenen' => 'required|integer|max:2',
-            'kinderen' => 'required|integer|max:2',
+            'housetype' => 'required',
+            'arrival' => 'required|date|date_format:d-m-Y|after:'.date('d-m-Y'),
+            'departure' => 'required|date|date_format:d-m-Y|after:'.date('d-m-Y', strtotime($request['arrival']. ' + 1 days')),
+            'adults' => 'required|integer|max:2',
+            'children' => 'required|integer|max:2',
             'babys' => 'required|integer|max:2',
             'privacystatement' => 'accepted'
         ]);
 
         // Check if the amount of persons for the booking doesn't exceed the max amount of persons for the house-type
-        $total_persons = $request['volwassenen'] + $request['kinderen'] + $request['babys'];
-        $house = BookHouse::find($request['huistype']);
+        $total_persons = $request['adults'] + $request['children'] + $request['babys'];
+        $house = BookHouse::find($request['housetype']);
         if($total_persons > $house->max_persons) {
             // Error! Too many occupants for the chosen house-type
             $error = \Illuminate\Validation\ValidationException::withMessages([
@@ -118,10 +129,10 @@ class BookHousesController extends Controller
         $bookingData = $request->session()->get('bookingData');
         $houses = BookHouse::orderBy('id', 'asc')->pluck('name', 'id');
 
-        $pricePerDay = BookHouse::find($bookingData['huistype'])->price;
+        $pricePerDay = BookHouse::find($bookingData['housetype'])->price;
 
         // Calculate price
-        $days = round((strtotime($bookingData['vertrek']) - strtotime($bookingData['aankomst'])) / (60 * 60 * 24));
+        $days = round((strtotime($bookingData['departure']) - strtotime($bookingData['arrival'])) / (60 * 60 * 24));
 
         return view('book.step3')->with(['customerData' => $customerData, 'bookingData' => $bookingData, 'houses' => $houses, 'price' => $pricePerDay, 'days' => $days]);
     }
@@ -138,9 +149,9 @@ class BookHousesController extends Controller
         $customerData = $request->session()->get('customerData');
         $bookingData = $request->session()->get('bookingData');
 
-        $houseType = $bookingData['huistype'];
-        $arrival = strtotime($bookingData['aankomst']);
-        $departure = strtotime($bookingData['vertrek']);
+        $houseType = $bookingData['housetype'];
+        $arrival = strtotime($bookingData['arrival']);
+        $departure = strtotime($bookingData['departure']);
 
         $checkDoubleBooking = Bookings::where('housetype', $houseType)
                             ->whereBetween('arrival', [$arrival, $departure])
@@ -163,26 +174,26 @@ class BookHousesController extends Controller
 
         if(count($checkUser) == 0) {
             $user = new User;
-            $user->name = $customerData['voornaam'].' '.$customerData['achternaam'];
-            $user->firstname = $customerData['voornaam'];
-            $user->surname = $customerData['achternaam'];
+            $user->name = $customerData['firstname'].' '.$customerData['surname'];
+            $user->firstname = $customerData['firstname'];
+            $user->surname = $customerData['surname'];
             $user->email = $customerData['email'];
-            $user->password = $customerData['wachtwoord'];
-            $user->cardnumber = $customerData['kaartnummer'];
-            $user->postal_code = $customerData['postcode'];
-            $user->streetname = $customerData['straatnaam'];
-            $user->housenumber = $customerData['huisnummer'];
-            $user->city = $customerData['plaats'];
+            $user->password = $customerData['password'];
+            $user->cardnumber = $customerData['cardnumber'];
+            $user->postal_code = $customerData['postal_code'];
+            $user->streetname = $customerData['streetname'];
+            $user->housenumber = $customerData['housenumber'];
+            $user->city = $customerData['city'];
             $user->save();
         }
 
         // Add booking to database
         $booking = new Bookings;
-        $booking->housetype = $bookingData['huistype'];
-        $booking->arrival = strtotime($bookingData['aankomst']);
-        $booking->departure = strtotime($bookingData['vertrek']);
-        $booking->adults = $bookingData['volwassenen'];
-        $booking->children = $bookingData['kinderen'];
+        $booking->housetype = $bookingData['housetype'];
+        $booking->arrival = strtotime($bookingData['arrival']);
+        $booking->departure = strtotime($bookingData['departure']);
+        $booking->adults = $bookingData['adults'];
+        $booking->children = $bookingData['children'];
         $booking->babys = $bookingData['babys'];
         $booking->customerid = count($checkUser) == 1 ? $checkUser[0]['id'] : $user->id;
         $booking->save();

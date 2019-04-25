@@ -14,6 +14,8 @@ return [
     */
 
     // General
+    'Book vacationhouse' => 'Vakantiehuisje boeken',
+    'Verification' => 'Verificatie',
     'Next' => 'Volgende',
     'Previous' => 'Vorige',
     'Step 1' => 'Stap 1',
@@ -22,7 +24,6 @@ return [
 
 
     // Step 1
-    'Book vacationhouse - Step 1' => 'Vakantiehuisje boeken - Stap 1',
     'Firstname' => 'Voornaam',
     'Surname' => 'Achternaam',
     'E-mail Address' => 'E-mailadres',
@@ -35,7 +36,6 @@ return [
     'City' => 'Plaatsnaam',
 
     // Step 2
-    'Book vacationhouse - Step 2' => 'Vakantiehuisje boeken - Stap 2',
     'Vacationhouse type' => 'Type vakantiehuisje',
     'Date of arrival' => 'Datum aankomst',
     'Date of departure' => 'Datum vertrek',
@@ -45,7 +45,6 @@ return [
     'I have read the privacystatement and agree' => 'Ik heb de privacystatement gelezen en ga akkoord.',
 
     // Step 3
-    'Book vacationhouse - Step 3' => 'Vakantiehuisje boeken - Verificatie',
     'Check your booking:' => 'Controleer je gegevens:',
     'Personal data:' => 'Persoonsgegevens:',
     'Booking data:' => 'Booking-informatie:',
