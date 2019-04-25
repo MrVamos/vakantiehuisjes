@@ -9,13 +9,13 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-2 label">{{Form::label('voornaam', __('auth.Firstname'))}}</div>
-            <div class="col-md-4">{{Form::text('voornaam', '', ['class' => 'form-control', 'placeholder' => __('auth.Firstname')])}}</div>
+            <div class="col-md-2 label">{{Form::label('firstname', __('auth.Firstname'))}}</div>
+            <div class="col-md-4">{{Form::text('firstname', '', ['class' => 'form-control', 'placeholder' => __('auth.Firstname')])}}</div>
         </div>
 
         <div class="row">
-            <div class="col-md-2 label">{{Form::label('achternaam', __('auth.Surname'))}}</div>
-            <div class="col-md-4">{{Form::text('achternaam', '', ['class' => 'form-control', 'placeholder' => __('auth.Surname')])}}</div>
+            <div class="col-md-2 label">{{Form::label('surname', __('auth.Surname'))}}</div>
+            <div class="col-md-4">{{Form::text('surname', '', ['class' => 'form-control', 'placeholder' => __('auth.Surname')])}}</div>
         </div>
 
         <div class="row">
@@ -24,10 +24,10 @@
         </div>
 
         <div class="row">
-            <div class="col-md-2 label">{{Form::label('wachtwoord', __('auth.Password'))}}</label></div>
+            <div class="col-md-2 label">{{Form::label('password', __('auth.Password'))}}</label></div>
 
             <div class="col-md-4">
-                {{Form::password('wachtwoord', ['class' => 'form-control', 'name' => 'wachtwoord'])}}
+                {{Form::password('password', ['class' => 'form-control', 'name' => 'password'])}}
 
                 @error('password')
                     <span class="invalid-feedback" role="alert">
@@ -38,35 +38,35 @@
         </div>
 
         <div class=" row">
-            <div class="col-md-2 label">{{Form::label('wachtwoord-confirm', __('auth.Password Confirmation'))}}</div>
+            <div class="col-md-2 label">{{Form::label('password-confirm', __('auth.Password Confirmation'))}}</div>
             <div class="col-md-4">
-                {{Form::password('wachtwoord-confirm', ['class' => 'form-control', 'name' => 'wachtwoord_confirmation', 'autocomplete' => 'new-password', 'type' => 'password', 'required' => 'required'])}}
+                {{Form::password('password-confirm', ['class' => 'form-control', 'name' => 'password_confirmation', 'autocomplete' => 'new-password', 'type' => 'password', 'required' => 'required'])}}
             </div>
         </div>
 
         <div class="row">
-            <div class="col-md-2 label">{{Form::label('kaartnummer', __('auth.Cardnumber'))}}</div>
-                <div class="col-md-4">{{Form::text('kaartnummer', '', ['class' => 'form-control', 'placeholder' => '#########'])}}</div>
+            <div class="col-md-2 label">{{Form::label('cardnumber', __('auth.Cardnumber'))}}</div>
+                <div class="col-md-4">{{Form::text('cardnumber', '', ['class' => 'form-control', 'placeholder' => '#########'])}}</div>
         </div>
 
         <div class="row">
-            <div class="col-md-2 label">{{Form::label('postcode', __('auth.Postal Code'))}}</div>
-            <div class="col-md-4">{{Form::text('postcode', '', ['class' => 'form-control', 'placeholder' => __('auth.Postal Code')])}}</div>
+            <div class="col-md-2 label">{{Form::label('postal_code', __('auth.Postal Code'))}}</div>
+            <div class="col-md-4">{{Form::text('postal_code', '', ['class' => 'form-control', 'placeholder' => __('auth.Postal Code')])}}</div>
         </div>
 
         <div class="row">
-            <div class="col-md-2 label">{{Form::label('straatnaam', __('auth.Streetname'))}}</div>
-            <div class="col-md-4">{{Form::text('straatnaam', '', ['class' => 'form-control', 'placeholder' => __('auth.Streetname')])}}</div>
+            <div class="col-md-2 label">{{Form::label('streetname', __('auth.Streetname'))}}</div>
+            <div class="col-md-4">{{Form::text('streetname', '', ['class' => 'form-control', 'placeholder' => __('auth.Streetname')])}}</div>
         </div>
 
         <div class="row">
-            <div class="col-md-2 label">{{Form::label('huisnummer', __('auth.Housenumber'))}}</div>
-            <div class="col-md-4">{{Form::text('huisnummer', '', ['class' => 'form-control', 'placeholder' => __('auth.Housenumber')])}}</div>
+            <div class="col-md-2 label">{{Form::label('housenumber', __('auth.Housenumber'))}}</div>
+            <div class="col-md-4">{{Form::text('housenumber', '', ['class' => 'form-control', 'placeholder' => __('auth.Housenumber')])}}</div>
         </div>
 
         <div class="row">
-            <div class="col-md-2 label">{{Form::label('plaats', __('auth.City'))}}</div>
-            <div class="col-md-4">{{Form::text('plaats', '', ['class' => 'form-control', 'placeholder' =>  __('auth.City')])}}</div>
+            <div class="col-md-2 label">{{Form::label('city', __('auth.City'))}}</div>
+            <div class="col-md-4">{{Form::text('city', '', ['class' => 'form-control', 'placeholder' =>  __('auth.City')])}}</div>
         </div>
         <div class="row">
             <div class="col-md-6">

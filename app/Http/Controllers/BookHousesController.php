@@ -178,7 +178,7 @@ class BookHousesController extends Controller
             $user->firstname = $customerData['firstname'];
             $user->surname = $customerData['surname'];
             $user->email = $customerData['email'];
-            $user->password = $customerData['password'];
+            $user->password = Hash::make($customerData['password']);
             $user->cardnumber = $customerData['cardnumber'];
             $user->postal_code = $customerData['postal_code'];
             $user->streetname = $customerData['streetname'];
